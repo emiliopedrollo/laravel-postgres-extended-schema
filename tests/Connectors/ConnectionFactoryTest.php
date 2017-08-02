@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Container\Container;
-use Bosnadev\Database\PostgresConnection;
-use Bosnadev\Database\Connectors\ConnectionFactory;
+use Pedrollo\Database\PostgresConnection;
+use Pedrollo\Database\Connectors\ConnectionFactory;
 
 class ConnectionFactoryBaseTest extends BaseTestCase
 {

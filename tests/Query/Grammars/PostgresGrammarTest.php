@@ -1,6 +1,6 @@
 <?php
 
-use Bosnadev\Database\Query\Grammars\PostgresGrammar;
+use Pedrollo\Database\Query\Grammars\PostgresGrammar;
 use Illuminate\Database\Query\Builder;
 
 class PostgresGrammarTest extends BaseTestCase

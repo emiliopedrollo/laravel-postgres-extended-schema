@@ -1,6 +1,6 @@
 <?php
 
-use Bosnadev\Database\PostgresConnection;
+use Pedrollo\Database\PostgresConnection;
 use Doctrine\DBAL\Driver\PDOPgSql\Driver;
 
 class PostgresConnectionTest extends BaseTestCase

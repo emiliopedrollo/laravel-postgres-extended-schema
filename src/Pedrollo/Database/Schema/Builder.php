@@ -1,12 +1,12 @@
 <?php
 
-namespace Bosnadev\Database\Schema;
+namespace Pedrollo\Database\Schema;
 
 use Closure;
 
 /**
  * Class Builder
- * @package Bosnadev\Database\Schema
+ * @package Pedrollo\Database\Schema
  */
 class Builder extends \Illuminate\Database\Schema\PostgresBuilder
 {

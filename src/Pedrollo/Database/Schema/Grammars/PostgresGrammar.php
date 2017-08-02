@@ -1,14 +1,14 @@
 <?php
 
-namespace Bosnadev\Database\Schema\Grammars;
+namespace Pedrollo\Database\Schema\Grammars;
 
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint as BaseBlueprint;
-use Bosnadev\Database\Schema\Blueprint;
+use Pedrollo\Database\Schema\Blueprint;
 
 /**
  * Class PostgresGrammar
- * @package Bosnadev\Database\Schema\Grammars
+ * @package Pedrollo\Database\Schema\Grammars
  */
 class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGrammar
 {
@@ -288,7 +288,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     /**
      * Compile a gin index key command.
      *
-     * @param  \Bosnadev\Database\Schema\Blueprint  $blueprint
+     * @param  \Pedrollo\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
@@ -302,7 +302,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     /**
      * Compile a gist index key command.
      *
-     * @param  \Bosnadev\Database\Schema\Blueprint  $blueprint
+     * @param  \Pedrollo\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */

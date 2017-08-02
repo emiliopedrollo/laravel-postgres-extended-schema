@@ -1,16 +1,16 @@
 <?php
 
-namespace Bosnadev\Database\Connectors;
+namespace Pedrollo\Database\Connectors;
 
 use PDO;
 use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\SqlServerConnection;
-use Bosnadev\Database\PostgresConnection;
+use Pedrollo\Database\PostgresConnection;
 
 /**
  * Class ConnectionFactory
- * @package Bosnadev\Database\Connectors
+ * @package Pedrollo\Database\Connectors
  */
 class ConnectionFactory extends \Illuminate\Database\Connectors\ConnectionFactory
 {

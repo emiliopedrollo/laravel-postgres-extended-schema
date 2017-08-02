@@ -1,14 +1,14 @@
 <?php
 
-namespace Bosnadev\Database;
+namespace Pedrollo\Database;
 
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\DatabaseServiceProvider as IlluminateServiceProvider;
-use Bosnadev\Database\Connectors\ConnectionFactory;
+use Pedrollo\Database\Connectors\ConnectionFactory;
 
 /**
  * Class DatabaseServiceProvider
- * @package Bosnadev\Database
+ * @package Pedrollo\Database
  */
 class DatabaseServiceProvider extends IlluminateServiceProvider
 {

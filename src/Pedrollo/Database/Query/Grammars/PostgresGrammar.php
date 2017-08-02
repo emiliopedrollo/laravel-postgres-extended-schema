@@ -1,6 +1,6 @@
 <?php
 
-namespace Bosnadev\Database\Query\Grammars;
+namespace Pedrollo\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\PostgresGrammar as LaravelPostgresGrammar;
@@ -8,7 +8,7 @@ use Illuminate\Database\Query\Grammars\PostgresGrammar as LaravelPostgresGrammar
 /**
  * Class PostgresGrammar
  *
- * @package Bosnadev\Database\Query\Grammars
+ * @package Pedrollo\Database\Query\Grammars
  */
 class PostgresGrammar extends LaravelPostgresGrammar
 {

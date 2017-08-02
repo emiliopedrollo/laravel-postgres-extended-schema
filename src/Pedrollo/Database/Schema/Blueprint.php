@@ -1,10 +1,10 @@
 <?php
 
-namespace Bosnadev\Database\Schema;
+namespace Pedrollo\Database\Schema;
 
 /**
  * Class Blueprint
- * @package Bosnadev\Database\Schema
+ * @package Pedrollo\Database\Schema
  */
 class Blueprint extends \Illuminate\Database\Schema\Blueprint
 {

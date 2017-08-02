@@ -1,8 +1,8 @@
 <?php
 
-use Bosnadev\Database\Schema\Blueprint;
-use Bosnadev\Database\PostgresConnection;
-use Bosnadev\Database\Schema\Grammars\PostgresGrammar;
+use Pedrollo\Database\Schema\Blueprint;
+use Pedrollo\Database\PostgresConnection;
+use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
 
 class PostgresGrammarBaseTest extends BaseTestCase
 {

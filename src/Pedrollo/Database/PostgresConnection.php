@@ -1,13 +1,13 @@
 <?php
 
-namespace Bosnadev\Database;
+namespace Pedrollo\Database;
 
 use Illuminate\Database\PostgresConnection as BasePostgresConnection;
 
 /**
  * Class PostgresConnection
  *
- * @package Bosnadev\Database
+ * @package Pedrollo\Database
  */
 class PostgresConnection extends BasePostgresConnection
 {

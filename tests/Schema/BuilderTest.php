@@ -1,8 +1,8 @@
 <?php
 
-use Bosnadev\Database\PostgresConnection;
-use Bosnadev\Database\Schema\Builder;
-use Bosnadev\Database\Schema\Blueprint;
+use Pedrollo\Database\PostgresConnection;
+use Pedrollo\Database\Schema\Builder;
+use Pedrollo\Database\Schema\Blueprint;
 
 class BuilderTest extends BaseTestCase
 {
