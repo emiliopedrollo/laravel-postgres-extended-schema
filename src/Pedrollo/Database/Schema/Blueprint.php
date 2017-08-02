@@ -312,7 +312,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         return $this->addColumn('daterange', $column);
     }
-    
+
     /**
      * Create a new tsvector column on the table.
      *
@@ -323,5 +323,18 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     public function tsvector($column)
     {
         return $this->addColumn('tsvector', $column);
+    }
+
+    /**
+     * Create a new bit column on the table.
+     *
+     * @param $column
+     * @param int $length
+     *
+     * @return \Illuminate\Support\Fluent
+     */
+    public function bit($column, $length = 1)
+    {
+        return $this->addColumn('bit', $column, compact('length'));
     }
 }

@@ -250,7 +250,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     {
         return "daterange";
     }
-    
+
     /**
      * Create the column definition for a Text Search Vector type.
      *
@@ -261,6 +261,18 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     protected function typeTsvector(Fluent $column)
     {
         return "tsvector";
+    }
+
+    /**
+     * Create the column definition for a Bytea type.
+     *
+     * @param Fluent $column
+     *
+     * @return string
+     */
+    protected function typeBytea(Fluent $column)
+    {
+        return "bytea";
     }
 
     /**
@@ -328,6 +340,17 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
             $sql .= ' INHERITS ("'.$blueprint->inherits.'")';
         }
         return $sql;
+    }
+
+    /**
+     * Create the column definition for a bit type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeBit(Fluent $column)
+    {
+        return "bit({$column->length})";
     }
 
 
