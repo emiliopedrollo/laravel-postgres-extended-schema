@@ -316,8 +316,8 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     /**
      * Compile create table query.
      *
-     * @param  Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $command
+     * @param BaseBlueprint $blueprint
+     * @param  \Illuminate\Support\Fluent $command
      * @return string
      */
     public function compileCreate(BaseBlueprint $blueprint, Fluent $command)
@@ -328,5 +328,24 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
             $sql .= ' INHERITS ("'.$blueprint->inherits.'")';
         }
         return $sql;
+    }
+
+
+
+    /**
+     * Compile a unique key command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileUnique(BaseBlueprint $blueprint, Fluent $command)
+    {
+        return sprintf('create unique index %s on %s (%s) %s',
+            $this->wrap($command->index),
+            $this->wrapTable($blueprint),
+            $this->columnize($command->columns),
+            isset($command->algorithm)?$command->algorithm:''
+        );
     }
 }
