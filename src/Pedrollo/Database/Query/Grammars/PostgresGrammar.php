@@ -74,4 +74,15 @@ class PostgresGrammar extends LaravelPostgresGrammar
     {
         return '(' . $this->wrap($where['column']) . ') is not null';
     }
+
+
+    /**
+     * Get the format for database stored dates.
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return 'Y-m-d H:i:sO';
+    }
 }
