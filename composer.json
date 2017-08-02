@@ -1,9 +1,8 @@
 {
-  "name": "bosnadev/database",
+  "name": "emiliopedrollo/laravel-postgres-extended-schema",
   "description": "Eloquent Extended, added some PostgreSQL features",
   "keywords": ["laravel", "eloquent", "database", "postgresql", "database"],
   "license": "MIT",
-  "homepage": "https://bosnadev.com",
   "authors": [
     {
       "name": "Mirza Pasic",
@@ -12,10 +11,13 @@
     {
       "name": "Peter Haza",
       "email": "peter.haza@gmail.com"
+    },{
+      "name": "Emílio B. Pedrollo",
+      "email": "emiliopedrollo@gmail.com"
     }
   ],
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.6",
     "illuminate/database": "^5.0",
     "ramsey/uuid": "^3.0",
     "doctrine/dbal": "^2.5"
@@ -27,7 +29,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Bosnadev\\Database\\": "src/Bosnadev/Database/"
+      "Pedrollo\\Database\\": "src/Pedrollo/Database/"
     }
   },
   "autoload-dev": {
