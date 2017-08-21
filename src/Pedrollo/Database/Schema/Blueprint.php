@@ -337,4 +337,17 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         return $this->addColumn('bit', $column, compact('length'));
     }
+
+    /**
+     * Create a new bit column on the table.
+     *
+     * @param $column
+     * @param $type
+     * @return \Illuminate\Support\Fluent
+     *
+     */
+    public function custom($column, $type)
+    {
+        return $this->addColumn('custom', $column, compact('type'));
+    }
 }

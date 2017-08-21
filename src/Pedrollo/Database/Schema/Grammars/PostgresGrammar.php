@@ -353,6 +353,16 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
         return "bit({$column->length})";
     }
 
+    /**
+     * Create the column definition for a bit type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeCustom(Fluent $column)
+    {
+        return "{$column->type}";
+    }
 
 
     /**
