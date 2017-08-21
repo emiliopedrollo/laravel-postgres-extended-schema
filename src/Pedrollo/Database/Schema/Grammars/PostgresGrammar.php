@@ -361,7 +361,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      */
     protected function typeCustom(Fluent $column)
     {
-        return "{$column->type}";
+        return "{$column->custom}";
     }
 
 
