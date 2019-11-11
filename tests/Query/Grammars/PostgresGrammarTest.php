@@ -7,23 +7,26 @@ class PostgresGrammarTest extends BaseTestCase
 {
     public function testHstoreWrapValue()
     {
+        /** @var PostgresGrammar $grammar */
         $grammar = Mockery::mock(PostgresGrammar::class)->makePartial();
 
-        $this->assertEquals('a => b', $grammar->wrapValue('[a => b]'));
+        $this->assertEquals('a => b', $grammar->wrap('[a => b]'));
     }
 
     public function testJsonWrapValue()
     {
+        /** @var PostgresGrammar $grammar */
         $grammar = Mockery::mock(PostgresGrammar::class)->makePartial();
 
-        $this->assertEquals('"a"->\'b\'', $grammar->wrapValue("a->'b'"));
-        $this->assertEquals('"a"->>\'b\'', $grammar->wrapValue("a->>'b'"));
-        $this->assertEquals('"a"#>\'b\'', $grammar->wrapValue("a#>'b'"));
-        $this->assertEquals('"a"#>>\'b\'', $grammar->wrapValue("a#>>'b'"));
+        $this->assertEquals('"a"->\'b\'', $grammar->wrap("a->'b'"));
+        $this->assertEquals('"a"->>\'b\'', $grammar->wrap("a->>'b'"));
+        $this->assertEquals('"a"#>\'b\'', $grammar->wrap("a#>'b'"));
+        $this->assertEquals('"a"#>>\'b\'', $grammar->wrap("a#>>'b'"));
     }
 
     public function testWhereNotNull()
     {
+        /** @var PostgresGrammar $grammar */
         $grammar = Mockery::mock(PostgresGrammar::class)->makePartial();
         $builder = Mockery::mock(Builder::class);
         $where = [
@@ -35,6 +38,7 @@ class PostgresGrammarTest extends BaseTestCase
 
     public function testWhereNull()
     {
+        /** @var PostgresGrammar|\Mockery\MockInterface $grammar */
         $grammar = Mockery::mock(PostgresGrammar::class)->makePartial();
         $builder = Mockery::mock(Builder::class);
         $where = [

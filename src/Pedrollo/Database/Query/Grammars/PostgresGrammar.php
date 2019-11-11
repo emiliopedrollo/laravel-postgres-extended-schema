@@ -25,15 +25,17 @@ class PostgresGrammar extends LaravelPostgresGrammar
     /**
      * @param string $value
      *
+     * @param bool $prefixAlias
      * @return string
      */
-    protected function wrapValue($value)
+    public function wrap($value, $prefixAlias = false)
     {
         if ($value === '*') {
             return $value;
         }
 
         // If querying hstore
+        /** @noinspection RegExpRedundantEscape */
         if (preg_match('/\[(.*?)\]/', $value, $match)) {
             return (string)str_replace(array('[', ']'), '', $match[1]);
         }
@@ -42,11 +44,11 @@ class PostgresGrammar extends LaravelPostgresGrammar
         foreach ($this->jsonOperators as $operator) {
             if (stripos($value, $operator)) {
                 list($value, $key) = explode($operator, $value, 2);
-                return parent::wrapValue($value) . $operator . $key;
+                return parent::wrap($value, $prefixAlias) . $operator . $key;
             }
         }
 
-        return parent::wrapValue($value);
+        return parent::wrap($value, $prefixAlias);
     }
 
     /**
