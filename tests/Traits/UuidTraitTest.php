@@ -11,11 +11,9 @@ class UuidTraitTest extends BaseTestCase
         $this->assertTrue($model::$uuidBooted);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testRequiredIncrementingFalse()
     {
+        $this->expectException(RuntimeException::class);
         $model = new UuidAssignsUuidStub();
         $model->_provideUuidKey();
     }

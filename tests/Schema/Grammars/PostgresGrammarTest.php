@@ -13,10 +13,10 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('CREATE INDEX', $statements[0]);
-        $this->assertContains('GIN("foo")', $statements[0]);
+        $this->assertStringContainsString('CREATE INDEX', $statements[0]);
+        $this->assertStringContainsString('GIN("foo")', $statements[0]);
     }
-    
+
     public function testAddingGistIndex()
     {
         $blueprint = new Blueprint('test');
@@ -24,8 +24,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('CREATE INDEX', $statements[0]);
-        $this->assertContains('GIST("foo")', $statements[0]);
+        $this->assertStringContainsString('CREATE INDEX', $statements[0]);
+        $this->assertStringContainsString('GIST("foo")', $statements[0]);
     }
 
     public function testAddingCharacter()
@@ -35,8 +35,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" character(14)', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" character(14)', $statements[0]);
     }
 
     public function testAddingHstore()
@@ -46,8 +46,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" hstore', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" hstore', $statements[0]);
     }
 
     public function testAddingUuid()
@@ -57,8 +57,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" uuid', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" uuid', $statements[0]);
     }
 
     public function testAddingJsonb()
@@ -68,8 +68,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" jsonb', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" jsonb', $statements[0]);
     }
 
     public function testAddingInt4range()
@@ -82,8 +82,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" int4range', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" int4range', $statements[0]);
     }
 
     public function testAddingInt8range()
@@ -96,8 +96,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" int8range', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" int8range', $statements[0]);
     }
 
     public function testAddingNumrange()
@@ -110,8 +110,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" numrange', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" numrange', $statements[0]);
     }
 
     public function testAddingTsrange()
@@ -124,8 +124,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" tsrange', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" tsrange', $statements[0]);
     }
 
     public function testAddingTstzrange()
@@ -138,8 +138,8 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" tstzrange', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" tstzrange', $statements[0]);
     }
 
     public function testAddingDatarange()
@@ -152,10 +152,10 @@ class PostgresGrammarBaseTest extends BaseTestCase
         );
 
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" daterange', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" daterange', $statements[0]);
     }
-    
+
     public function testAddingTsvector()
     {
         $blueprint = new Blueprint('test');
@@ -164,10 +164,10 @@ class PostgresGrammarBaseTest extends BaseTestCase
             $this->getConnection(),
             $this->getGrammar()
         );
-        
+
         $this->assertEquals(1, count($statements));
-        $this->assertContains('alter table', $statements[0]);
-        $this->assertContains('add column "foo" tsvector', $statements[0]);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" tsvector', $statements[0]);
     }
 
     /**

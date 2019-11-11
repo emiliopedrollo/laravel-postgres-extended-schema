@@ -1,17 +1,30 @@
 <?php
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\MockInterface;
 use Pedrollo\Database\Schema\Blueprint;
+use PHPUnit\Runner\TestHook;
 
-class BlueprintTest extends BaseTestCase
+class BlueprintTest extends BaseTestCase implements TestHook
 {
+    use MockeryPHPUnitIntegration;
+
+    /** @var  Blueprint|MockInterface */
     protected $blueprint;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
         $this->blueprint = Mockery::mock(Blueprint::class)
             ->makePartial()->shouldAllowMockingProtectedMethods();
+    }
+
+
+    public function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 
     public function testGinIndex()
@@ -22,7 +35,7 @@ class BlueprintTest extends BaseTestCase
 
         $this->blueprint->gin('col', 'myName');
     }
-    
+
     public function testGistIndex()
     {
         $this->blueprint
