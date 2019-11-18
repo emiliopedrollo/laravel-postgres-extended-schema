@@ -40,13 +40,13 @@ class DatabaseServiceProvider extends IlluminateServiceProvider
 
         // The postgres connection, provided here to facilitate extensibility, by default
         // the extended version is used.
-        $this->app->singleton('db.connection.pgsql',function($connection, $database, $prefix, $config) {
+        $this->app->singleton('db.connection.pgsql', function($app, $connection, $database, $prefix = '', array $config = []) {
             return new PostgresConnection($connection, $database, $prefix, $config);
         });
 
         // The scheme builder, provided here to facilitate extensibility, by default
         // the illuminate base is used.
-        $this->app->singleton('db.connection.pgsql.builder',function(BasePostgresConnection $connection) {
+        $this->app->singleton('db.connection.pgsql.builder',function($app, BasePostgresConnection $connection) {
             return new Builder($connection);
         });
 
