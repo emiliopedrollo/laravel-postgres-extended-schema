@@ -2,9 +2,14 @@
 
 namespace Pedrollo\Database;
 
+use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\DatabaseServiceProvider as IlluminateServiceProvider;
+use Illuminate\Database\PostgresConnection as BasePostgresConnection;
+use Illuminate\Database\Query\Grammars\PostgresGrammar;
+use Illuminate\Database\Query\Processors\PostgresProcessor;
 use Pedrollo\Database\Connectors\ConnectionFactory;
+use Pedrollo\Database\Schema\Builder;
 
 /**
  * Class DatabaseServiceProvider
@@ -32,5 +37,33 @@ class DatabaseServiceProvider extends IlluminateServiceProvider
         $this->app->singleton('db', function ($app) {
             return new DatabaseManager($app, $app['db.factory']);
         });
+
+        // The postgres connection, provided here to facilitate extensibility, by default
+        // the extended version is used.
+        $this->app->singleton('db.connection.pgsql',function($connection, $database, $prefix, $config) {
+            return new PostgresConnection($connection, $database, $prefix, $config);
+        });
+
+        // The scheme builder, provided here to facilitate extensibility, by default
+        // the illuminate base is used.
+        $this->app->singleton('db.connection.pgsql.builder',function(BasePostgresConnection $connection) {
+            return new Builder($connection);
+        });
+
+        // The query grammar, provided here to facilitate extensibility, by default
+        // the illuminate base is used.
+        $this->app->singleton('db.connection.pgsql.query.grammar',PostgresGrammar::class);
+
+        // The Schema Grammar, provided here do facilitate extensibility, by default
+        // the extended version is used.
+        $this->app->singleton('db.connection.pgsql.schema.grammar', Schema\Grammars\PostgresGrammar::class);
+
+        // The post processor, provided here to facilitate extensibility, by default
+        // the illuminate base is used.
+        $this->app->singleton('db.connection.pgsql.processor',PostgresProcessor::class);
+
+        // The doctrine driver, provided here to facilitate extensibility, by default
+        // the default driver from doctrine is used.
+        $this->app->singleton('db.connection.pgsql.driver',DoctrineDriver::class);
     }
 }
