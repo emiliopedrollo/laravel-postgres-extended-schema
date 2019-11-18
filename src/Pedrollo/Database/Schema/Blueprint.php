@@ -66,7 +66,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         return $this->indexCommand('gin', $columns, $name);
     }
-    
+
     /**
      * Specify a gist index for the table.
      *
@@ -99,7 +99,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     {
         return $this->addColumn('hstore', $column);
     }
-    
+
     /**
      * Create a new netmask (CIDR-notation) (cidr) column on the table.
      *

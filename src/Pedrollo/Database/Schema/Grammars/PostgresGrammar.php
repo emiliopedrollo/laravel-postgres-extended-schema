@@ -12,6 +12,21 @@ use Pedrollo\Database\Schema\Blueprint;
  */
 class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGrammar
 {
+     /**
+     * Check if the type is uuid, use internal guid
+     *
+     * @param  string $type
+     * @return \Doctrine\DBAL\Types\Type
+     */
+    protected function getDoctrineColumnType($type)
+    {
+        if($type === 'uuid') {
+            $type = 'guid';
+        }
+
+        return parent::getDoctrineColumnType($type);
+    }
+
     /**
      * Create the column definition for a character type.
      *
@@ -310,7 +325,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
 
         return sprintf('CREATE INDEX %s ON %s USING GIN(%s)', $command->index, $this->wrapTable($blueprint), $columns);
     }
-    
+
     /**
      * Compile a gist index key command.
      *
@@ -374,7 +389,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      */
     public function compileUnique(BaseBlueprint $blueprint, Fluent $command)
     {
-        return sprintf('create unique index %s on %s (%s) %s',
+        return sprintf( 'create unique index %s on %s (%s) %s',
             $this->wrap($command->index),
             $this->wrapTable($blueprint),
             $this->columnize($command->columns),
