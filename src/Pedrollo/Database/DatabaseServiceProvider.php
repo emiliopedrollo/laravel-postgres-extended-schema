@@ -40,7 +40,7 @@ class DatabaseServiceProvider extends IlluminateServiceProvider
 
         // The postgres connection, provided here to facilitate extensibility, by default
         // the extended version is used.
-        $this->app->singleton('db.connection.pgsql',
+        $this->app->singletonIf('db.connection.pgsql',
             function(/** @noinspection PhpUnusedParameterInspection */ $app, $params) {
 
                 /**
@@ -56,25 +56,25 @@ class DatabaseServiceProvider extends IlluminateServiceProvider
 
         // The scheme builder, provided here to facilitate extensibility, by default
         // the illuminate base is used.
-        $this->app->singleton('db.connection.pgsql.builder',
+        $this->app->singletonIf('db.connection.pgsql.builder',
             function(/** @noinspection PhpUnusedParameterInspection */ $app, $params) {
                 return new Builder($params['connection']);
             });
 
         // The query grammar, provided here to facilitate extensibility, by default
         // the illuminate base is used.
-        $this->app->singleton('db.connection.pgsql.query.grammar',PostgresGrammar::class);
+        $this->app->singletonIf('db.connection.pgsql.query.grammar',PostgresGrammar::class);
 
         // The Schema Grammar, provided here do facilitate extensibility, by default
         // the extended version is used.
-        $this->app->singleton('db.connection.pgsql.schema.grammar', Schema\Grammars\PostgresGrammar::class);
+        $this->app->singletonIf('db.connection.pgsql.schema.grammar', Schema\Grammars\PostgresGrammar::class);
 
         // The post processor, provided here to facilitate extensibility, by default
         // the illuminate base is used.
-        $this->app->singleton('db.connection.pgsql.processor',PostgresProcessor::class);
+        $this->app->singletonIf('db.connection.pgsql.processor',PostgresProcessor::class);
 
         // The doctrine driver, provided here to facilitate extensibility, by default
         // the default driver from doctrine is used.
-        $this->app->singleton('db.connection.pgsql.driver',DoctrineDriver::class);
+        $this->app->singletonIf('db.connection.pgsql.driver',DoctrineDriver::class);
     }
 }
