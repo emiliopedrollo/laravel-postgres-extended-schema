@@ -1,11 +1,24 @@
 <?php
 
 use Illuminate\Container\Container;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Connectors\ConnectionFactory;
+use Mockery\Mock;
 use Pedrollo\Database\PostgresConnection;
-use Pedrollo\Database\Connectors\ConnectionFactory;
 
 class ConnectionFactoryBaseTest extends BaseTestCase
 {
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        if (!Connection::getResolver('pgsql')) {
+            Connection::resolverFor('pgsql', function ($connection, $database, $prefix, $config) {
+                return new PostgresConnection($connection, $database, $prefix, $config);
+            });
+        }
+    }
+
     public function testMakeCallsCreateConnection()
     {
         $pgConfig = [ 'driver' => 'pgsql', 'prefix' => 'prefix', 'database' => 'database', 'name' => 'foo' ];
@@ -14,6 +27,7 @@ class ConnectionFactoryBaseTest extends BaseTestCase
 
         $factory = Mockery::mock(ConnectionFactory::class, [ new Container() ])->makePartial();
         $factory->shouldAllowMockingProtectedMethods();
+        /** @noinspection PhpUndefinedMethodInspection */
         $conn    = $factory->createConnection('pgsql', $pdo, 'database', 'prefix', $pgConfig);
 
         $this->assertInstanceOf(PostgresConnection::class, $conn);
@@ -22,6 +36,7 @@ class ConnectionFactoryBaseTest extends BaseTestCase
 
 class DatabaseConnectionFactoryPDOStub extends PDO
 {
+    /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct()
     {
     }
