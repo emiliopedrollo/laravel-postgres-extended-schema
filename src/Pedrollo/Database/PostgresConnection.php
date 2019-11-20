@@ -29,7 +29,9 @@ class PostgresConnection extends BasePostgresConnection
             $this->useDefaultSchemaGrammar();
         }
 
-        return Container::getInstance()->make('db.connection.pgsql.builder',array($this));
+        return Container::getInstance()->make('db.connection.pgsql.builder',array(
+            'connection' => $this
+        ));
     }
 
     /**

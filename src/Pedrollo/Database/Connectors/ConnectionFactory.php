@@ -29,7 +29,7 @@ class ConnectionFactory extends \Illuminate\Database\Connectors\ConnectionFactor
     protected function createConnection($driver, $connection, $database, $prefix = '', array $config = array())
     {
         if ($this->container->bound($key = "db.connection.{$driver}")) {
-            return $this->container->make($key, array($connection, $database, $prefix, $config));
+            return $this->container->make($key, compact('connection', 'database', 'prefix', 'config'));
         }
 
         return parent::createConnection($driver, $connection, $database, $prefix, $config);

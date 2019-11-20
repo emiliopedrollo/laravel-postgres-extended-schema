@@ -2,10 +2,10 @@
 
 namespace Pedrollo\Database;
 
+use Closure;
 use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\DatabaseServiceProvider as IlluminateServiceProvider;
-use Illuminate\Database\PostgresConnection as BasePostgresConnection;
 use Illuminate\Database\Query\Grammars\PostgresGrammar;
 use Illuminate\Database\Query\Processors\PostgresProcessor;
 use Pedrollo\Database\Connectors\ConnectionFactory;
@@ -40,15 +40,26 @@ class DatabaseServiceProvider extends IlluminateServiceProvider
 
         // The postgres connection, provided here to facilitate extensibility, by default
         // the extended version is used.
-        $this->app->singleton('db.connection.pgsql', function($app, $connection, $database, $prefix = '', array $config = []) {
-            return new PostgresConnection($connection, $database, $prefix, $config);
-        });
+        $this->app->singleton('db.connection.pgsql',
+            function(/** @noinspection PhpUnusedParameterInspection */ $app, $params) {
+
+                /**
+                 * @var Closure $connection
+                 * @var string $database
+                 * @var string|null $prefix
+                 * @var array|null $config
+                 */
+                extract($params,EXTR_SKIP);
+
+                return new PostgresConnection($connection, $database, $prefix ?? '', $config ?? []);
+            });
 
         // The scheme builder, provided here to facilitate extensibility, by default
         // the illuminate base is used.
-        $this->app->singleton('db.connection.pgsql.builder',function($app, BasePostgresConnection $connection) {
-            return new Builder($connection);
-        });
+        $this->app->singleton('db.connection.pgsql.builder',
+            function(/** @noinspection PhpUnusedParameterInspection */ $app, $params) {
+                return new Builder($params['connection']);
+            });
 
         // The query grammar, provided here to facilitate extensibility, by default
         // the illuminate base is used.
