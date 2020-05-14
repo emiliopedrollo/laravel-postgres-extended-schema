@@ -1,11 +1,15 @@
 <?php
 
+namespace Tests\Schema;
+
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use Pedrollo\Database\Schema\Blueprint;
 use PHPUnit\Runner\TestHook;
+use Tests\BaseTestCase;
 
-class BlueprintTest extends BaseTestCase implements TestHook
+class BlueprintBaseTest extends BaseTestCase implements TestHook
 {
     use MockeryPHPUnitIntegration;
 
@@ -29,6 +33,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testGinIndex()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('indexCommand')
             ->with('gin', 'col', 'myName');
@@ -38,6 +43,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testGistIndex()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('indexCommand')
             ->with('gist', 'col', 'myName');
@@ -47,6 +53,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testCharacter()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('character', 'col', 14);
@@ -56,6 +63,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testHstore()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('hstore', 'col');
@@ -65,6 +73,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testUuid()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('uuid', 'col');
@@ -74,6 +83,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testJsonb()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('jsonb', 'col');
@@ -83,6 +93,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testInt4range()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('int4range', 'col');
@@ -92,6 +103,7 @@ class BlueprintTest extends BaseTestCase implements TestHook
 
     public function testInt8range()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('int8range', 'col');
@@ -99,8 +111,9 @@ class BlueprintTest extends BaseTestCase implements TestHook
         $this->blueprint->int8range('col');
     }
 
-    public function testNumrange()
+    public function testNumRange()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('numrange', 'col');
@@ -108,8 +121,9 @@ class BlueprintTest extends BaseTestCase implements TestHook
         $this->blueprint->numrange('col');
     }
 
-    public function testTsrange()
+    public function testTSRange()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('tsrange', 'col');
@@ -117,8 +131,9 @@ class BlueprintTest extends BaseTestCase implements TestHook
         $this->blueprint->tsrange('col');
     }
 
-    public function testTstzrange()
+    public function testTSTZRange()
     {
+        /** @noinspection PhpParamsInspection */
         $this->blueprint
             ->shouldReceive('addColumn')
             ->with('tstzrange', 'col');

@@ -1,9 +1,14 @@
 <?php
 
+namespace Tests\Traits;
+
+use Exception;
 use Pedrollo\Database\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
+use RuntimeException;
+use Tests\BaseTestCase;
 
-class UuidTraitTest extends BaseTestCase
+class UuidTraitBaseTest extends BaseTestCase
 {
     public function testTraitIsBooted()
     {
@@ -11,6 +16,9 @@ class UuidTraitTest extends BaseTestCase
         $this->assertTrue($model::$uuidBooted);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testRequiredIncrementingFalse()
     {
         $this->expectException(RuntimeException::class);
@@ -18,13 +26,16 @@ class UuidTraitTest extends BaseTestCase
         $model->_provideUuidKey();
     }
 
+    /**
+     * @throws Exception
+     */
     public function testUuidAssignsUuid()
     {
         $model = new UuidAssignsUuidStub2();
 
         $model->_provideUuidKey();
 
-        $this->assertEquals(4, substr_count($model->id, '-'));
+        $this->assertEquals(4, substr_count($model->getKey(), '-'));
     }
 }
 
@@ -47,6 +58,9 @@ class UuidAssignsUuidStub extends Model
     public $timestamps = false;
     public $incrementing = true;
 
+    /**
+     * @throws Exception
+     */
     public function _provideUuidKey()
     {
         $this->provideUuidKey($this);

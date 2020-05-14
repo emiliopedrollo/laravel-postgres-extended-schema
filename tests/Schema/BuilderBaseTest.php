@@ -1,9 +1,15 @@
 <?php
 
+namespace Tests\Schema;
+
+use Mockery;
 use Pedrollo\Database\PostgresConnection;
 use Pedrollo\Database\Schema\Blueprint;
+use ReflectionException;
+use ReflectionMethod;
+use Tests\BaseTestCase;
 
-class BuilderTest extends BaseTestCase
+class BuilderBaseTest extends BaseTestCase
 {
     /**
      * @throws ReflectionException

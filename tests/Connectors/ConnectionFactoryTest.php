@@ -1,10 +1,14 @@
 <?php
 
+namespace Tests\Connectors;
+
 use Illuminate\Container\Container;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Connectors\ConnectionFactory;
-use Mockery\Mock;
+use Mockery;
+use PDO;
 use Pedrollo\Database\PostgresConnection;
+use Tests\BaseTestCase;
 
 class ConnectionFactoryBaseTest extends BaseTestCase
 {
