@@ -7,9 +7,9 @@ use Pedrollo\Database\PostgresConnection;
 use Pedrollo\Database\Schema\Blueprint;
 use ReflectionException;
 use ReflectionMethod;
-use Tests\BaseTestCase;
+use Tests\TestCase;
 
-class BuilderBaseTest extends BaseTestCase
+class BuilderTest extends TestCase
 {
     /**
      * @throws ReflectionException

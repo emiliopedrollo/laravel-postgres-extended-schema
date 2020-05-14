@@ -8,9 +8,9 @@ use Illuminate\Database\Connectors\ConnectionFactory;
 use Mockery;
 use PDO;
 use Pedrollo\Database\PostgresConnection;
-use Tests\BaseTestCase;
+use Tests\TestCase;
 
-class ConnectionFactoryBaseTest extends BaseTestCase
+class ConnectionFactoryTest extends TestCase
 {
 
     protected function setUp(): void

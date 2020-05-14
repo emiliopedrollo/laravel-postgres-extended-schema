@@ -6,9 +6,9 @@ use Mockery;
 use Pedrollo\Database\Schema\Blueprint;
 use Pedrollo\Database\PostgresConnection;
 use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
-use Tests\BaseTestCase;
+use Tests\TestCase;
 
-class PostgresGrammarBaseTest extends BaseTestCase
+class PostgresGrammarTest extends TestCase
 {
     public function testAddingGinIndex()
     {

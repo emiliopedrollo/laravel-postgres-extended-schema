@@ -5,6 +5,7 @@ namespace Pedrollo\Database;
 use Illuminate\Database\Grammar;
 use Illuminate\Database\PostgresConnection as BasePostgresConnection;
 use Illuminate\Database\Schema\PostgresBuilder;
+use Pedrollo\Database\Query\Builder;
 use Pedrollo\Database\Schema\Blueprint;
 
 /**
@@ -28,6 +29,11 @@ class PostgresConnection extends BasePostgresConnection
         return $builder;
     }
 
+    public function query()
+    {
+        return new Builder($this, $this->getQueryGrammar(), $this->getPostProcessor());
+    }
+
 
     /**
      * Get the default schema grammar instance.
@@ -37,5 +43,10 @@ class PostgresConnection extends BasePostgresConnection
     protected function getDefaultSchemaGrammar()
     {
         return $this->withTablePrefix(new Schema\Grammars\PostgresGrammar());
+    }
+
+    protected function getDefaultQueryGrammar()
+    {
+        return $this->withTablePrefix(new Query\Grammars\PostgresGrammar());
     }
 }

@@ -7,9 +7,9 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use Pedrollo\Database\Schema\Blueprint;
 use PHPUnit\Runner\TestHook;
-use Tests\BaseTestCase;
+use Tests\TestCase;
 
-class BlueprintBaseTest extends BaseTestCase implements TestHook
+class BlueprintTest extends TestCase implements TestHook
 {
     use MockeryPHPUnitIntegration;
 

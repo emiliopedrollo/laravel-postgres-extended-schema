@@ -3,9 +3,9 @@
 namespace Tests;
 
 use Mockery;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class BaseTestCase extends TestCase
+abstract class TestCase extends BaseTestCase
 {
     public function tearDown() : void
     {

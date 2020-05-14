@@ -6,9 +6,9 @@ use Exception;
 use Pedrollo\Database\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
-use Tests\BaseTestCase;
+use Tests\TestCase;
 
-class UuidTraitBaseTest extends BaseTestCase
+class UuidTraitTest extends TestCase
 {
     public function testTraitIsBooted()
     {

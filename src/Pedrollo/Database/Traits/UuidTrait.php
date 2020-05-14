@@ -2,6 +2,7 @@
 
 namespace Pedrollo\Database\Traits;
 
+use Exception;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ trait UuidTrait
     protected static function bootUuidTrait()
     {
         static::creating(function (Model $model) {
+            /** @var UuidTrait|Model $model */
             $model->provideUuidKey($model);
         });
     }
@@ -28,6 +30,7 @@ trait UuidTrait
      * Provide a UUID
      *
      * @param $model
+     * @throws Exception
      */
     protected function provideUuidKey($model)
     {

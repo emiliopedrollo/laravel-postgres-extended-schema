@@ -6,7 +6,7 @@ use Mockery;
 use Pedrollo\Database\PostgresConnection;
 use Doctrine\DBAL\Driver\PDOPgSql\Driver;
 
-class PostgresConnectionBaseTest extends BaseTestCase
+class PostgresConnectionTestCase extends TestCase
 {
     public function testReturnsDoctrineDriver()
     {
