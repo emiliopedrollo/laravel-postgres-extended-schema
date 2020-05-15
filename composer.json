@@ -3,6 +3,7 @@
   "description": "Eloquent Extended, added some PostgreSQL features",
   "keywords": ["laravel", "eloquent", "database", "postgresql", "database"],
   "license": "MIT",
+  "minimum-stability": "stable",
   "authors": [
     {
       "name": "Mirza Pasic",
@@ -40,5 +41,11 @@
       "Tests\\": "tests/"
     }
   },
-  "minimum-stability": "stable"
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Pedrollo\\Database\\DatabaseServiceProvider"
+      ]
+    }
+  }
 }
