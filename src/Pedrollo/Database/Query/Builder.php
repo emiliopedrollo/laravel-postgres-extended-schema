@@ -28,7 +28,7 @@ class Builder extends BaseBuilder
     {
         parent::__construct($connection, $grammar, $processor);
 
-        $this->bindings = array_merge($this->bindings,['expressions' => []]);
+        $this->bindings = ['expressions' => []] + $this->bindings;
     }
 
     /**
