@@ -369,18 +369,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     }
 
     /**
-     * Create the column definition for a bit type.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeCustom(Fluent $column)
-    {
-        return "{$column->custom}";
-    }
-
-
-    /**
      * Compile a unique key command.
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint

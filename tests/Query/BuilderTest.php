@@ -77,7 +77,6 @@ class BuilderTest extends TestCase
 
         $connection = $this->getConnection();
 
-        /** @noinspection PhpParamsInspection */
         $connection->shouldReceive('insert')
             ->andReturnUsing(function ($query, $bindings) {
                 $expected = 'with "u" as (select "id" from "users" where "id" > ?) insert into "posts" ("user_id") select * from "u"';
@@ -104,7 +103,6 @@ class BuilderTest extends TestCase
 
         $connection = $this->getConnection();
 
-        /** @noinspection PhpParamsInspection */
         $connection->shouldReceive('update')
             ->andReturnUsing(function($query, $bindings) use ($datetime) {
                 $expected = 'with "u" as (select * from "users" where "id" > ?) update "posts" set "user_id" = (select min(id) from u), "updated_at" = ?';
@@ -126,7 +124,6 @@ class BuilderTest extends TestCase
     {
         $connection = $this->getConnection();
 
-        /** @noinspection PhpParamsInspection */
         $connection->shouldReceive('delete')
             ->andReturnUsing(function($query, $bindings) {
                 $expected = 'with "u" as (select * from "users" where "id" > ?) delete from "posts" where "user_id" in (select "id" from "u")';

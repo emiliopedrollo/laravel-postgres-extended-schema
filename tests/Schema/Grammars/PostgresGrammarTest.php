@@ -174,6 +174,20 @@ class PostgresGrammarTest extends TestCase
         $this->assertStringContainsString('add column "foo" tsvector', $statements[0]);
     }
 
+    public function testAddingCustomType()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->custom('foo','bar');
+        $statements = $blueprint->toSql(
+            $this->getConnection(),
+            $this->getGrammar()
+        );
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('alter table', $statements[0]);
+        $this->assertStringContainsString('add column "foo" bar', $statements[0]);
+    }
+
     /**
      * @return PostgresConnection
      */

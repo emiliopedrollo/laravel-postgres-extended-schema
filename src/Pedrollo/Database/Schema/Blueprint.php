@@ -2,6 +2,9 @@
 
 namespace Pedrollo\Database\Schema;
 
+use Illuminate\Support\Fluent;
+use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
+
 /**
  * Class Blueprint
  * @package Pedrollo\Database\Schema
@@ -284,6 +287,11 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public function custom($column, $custom)
     {
-        return $this->addColumn('custom', $column, compact('custom'));
+        if (!PostgresGrammar::hasMacro('type' . ucfirst($custom))) {
+            PostgresGrammar::macro('type' . ucfirst($custom),function (Fluent $column){
+                return $column->type;
+            });
+        }
+        return $this->addColumn($custom, $column);
     }
 }
