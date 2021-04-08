@@ -77,7 +77,7 @@ class BuilderTest extends TestCase
 
         $connection = $this->getConnection();
 
-        $connection->shouldReceive('insert')
+        $connection->shouldReceive('affectingStatement')
             ->andReturnUsing(function ($query, $bindings) {
                 $expected = 'with "u" as (select "id" from "users" where "id" > ?) insert into "posts" ("user_id") select * from "u"';
 
@@ -87,13 +87,18 @@ class BuilderTest extends TestCase
                 return true;
             });
 
-        /** @var Builder $builder */
-        $connection->table('posts')
-            ->withExpression('u', $connection
-                                            ->table('users')
-                                            ->select('id')
-                                            ->where('id', '>', 1)
-            )->insertUsing(['user_id'],$connection->table('u'));
+        $connection->shouldReceive('reconnectIfMissingConnection');
+
+        $connection->pretend(function (PostgresConnection $connection){
+            /** @var Builder $builder */
+            $connection->query()->from('posts')
+                ->withExpression('u', $connection
+                    ->table('users')
+                    ->select('id')
+                    ->where('id', '>', 1)
+                )->insertUsing(['user_id'],$connection->query()->from('u'));
+        });
+
     }
 
 
@@ -148,6 +153,7 @@ class BuilderTest extends TestCase
         $connection->makePartial();
         $connection->useDefaultPostProcessor();
         $connection->useDefaultQueryGrammar();
+        $connection->shouldAllowMockingProtectedMethods();
         return $connection;
     }
 }
