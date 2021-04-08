@@ -72,7 +72,7 @@ class Builder extends BaseBuilder
     {
         [$sql, $bindings] = $this->createSub($query);
         $bindings = array_merge($this->bindings['expressions'], $bindings);
-        return $this->connection->insert(
+        return $this->connection->affectingStatement(
             $this->grammar->compileInsertUsing($this, $columns, $sql),
             $this->cleanBindings($bindings)
         );
