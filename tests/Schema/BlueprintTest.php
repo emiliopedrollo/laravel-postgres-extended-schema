@@ -130,6 +130,26 @@ class BlueprintTest extends TestCase implements TestHook
         $this->blueprint->tstzrange('col');
     }
 
+
+    public function testBit()
+    {
+        $this->blueprint
+            ->shouldReceive('addColumn')
+            ->with('bit', 'col');
+
+        $this->blueprint->bit('col',2);
+    }
+
+
+    public function testBytea()
+    {
+        $this->blueprint
+            ->shouldReceive('addColumn')
+            ->with('bytea', 'col');
+
+        $this->blueprint->tstzrange('col');
+    }
+
     public function testCustomType()
     {
         $this->blueprint

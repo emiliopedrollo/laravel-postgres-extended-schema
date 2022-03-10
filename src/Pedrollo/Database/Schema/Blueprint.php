@@ -278,7 +278,20 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     }
 
     /**
-     * Create a new bit column on the table.
+     * Create a new bytea column on the table.
+     *
+     * @param $column
+     * @param int $length
+     *
+     * @return \Illuminate\Support\Fluent
+     */
+    public function bytea($column)
+    {
+        return $this->addColumn('bytea', $column);
+    }
+
+    /**
+     * Create a new custom column on the table.
      *
      * @param $column
      * @param $custom
