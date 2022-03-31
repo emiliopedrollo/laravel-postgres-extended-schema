@@ -6,6 +6,7 @@ namespace Pedrollo\Database\Query;
 use Closure;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder as BaseBuilder;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
 
@@ -77,5 +78,53 @@ class Builder extends BaseBuilder
             $this->cleanBindings($bindings)
         );
     }
+
+    public function crossJoinLateral($table, $first = null, $operator = null, $second = null)
+    {
+        return parent::crossJoin(new Expression('lateral '.$table), $first,$operator, $second);
+    }
+
+    public function crossJoinLateralSub($query, $as)
+    {
+        [$query, $bindings] = $this->createSub($query);
+        $expression = 'lateral ('.$query.') as '.$this->grammar->wrapTable($as);
+        $this->addBinding($bindings, 'join');
+        $this->joins[] = $this->newJoinClause($this, 'cross', new Expression($expression));
+        return $this;
+    }
+
+    public function joinLateral($table, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+    {
+        return parent::join(new Expression('lateral '.$table), $first, $operator, $second, $type, $where);
+    }
+
+    public function joinLateralSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+    {
+        [$query, $bindings] = $this->createSub($query);
+        $expression = 'lateral ('.$query.') as '.$this->grammar->wrapTable($as);
+        $this->addBinding($bindings, 'join');
+        return $this->join(new Expression($expression), $first, $operator, $second, $type, $where);
+    }
+
+    public function leftLateralJoin($table, $first, $operator = null, $second = null)
+    {
+        return parent::leftJoin(new Expression('lateral '.$table), $first, $operator, $second);
+    }
+
+    public function leftJoinSub($query, $as, $first, $operator = null, $second = null)
+    {
+        return $this->joinLateralSub($query, $as, $first, $operator, $second, 'left');
+    }
+
+    public function rightLateralJoin($table, $first, $operator = null, $second = null)
+    {
+        return parent::rightJoin(new Expression('lateral '.$table), $first, $operator, $second);
+    }
+
+    public function rightJoinSub($query, $as, $first, $operator = null, $second = null)
+    {
+        return $this->joinLateralSub($query, $as, $first, $operator, $second, 'right');
+    }
+
 
 }

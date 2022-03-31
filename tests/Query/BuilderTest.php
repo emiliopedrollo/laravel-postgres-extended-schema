@@ -72,6 +72,72 @@ class BuilderTest extends TestCase
         $this->assertEquals([3], $builder->getRawBindings()['expressions']);
     }
 
+    public function testJoinLateral()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->joinLateral('data','users_id','=','users.id');
+
+        $expected = 'select * from "users" inner join lateral data on "users_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testJoinLateralSub()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->joinLateralSub( $this->getConnection()->query()
+                ->select(['*'])
+                ->from('data'),
+                'data', 'users_id','=','users.id');
+
+        $expected = 'select * from "users" inner join lateral (select * from "data") as "data" on "users_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testJoinCrossLateralSub()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->crossJoinLateralSub( $this->getConnection()->query()
+                ->select(['*'])
+                ->from('data'),
+                'data');
+
+        $expected = 'select * from "users" cross join lateral (select * from "data") as "data"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testJoinCrossLateral()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->crossJoinLateral('data');
+
+        $expected = 'select * from "users" cross join lateral data';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testJoinLeftLateral()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->leftLateralJoin('data', 'users_id','=','users.id');
+
+        $expected = 'select * from "users" left join lateral data on "users_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testJoinRightLateral()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->rightLateralJoin('data', 'users_id','=','users.id');
+
+        $expected = 'select * from "users" right join lateral data on "users_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
     public function testInsertUsing()
     {
 
