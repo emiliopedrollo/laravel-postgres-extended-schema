@@ -52,8 +52,9 @@ class BlueprintTest extends TestCase implements TestHook
     public function testGinIndex()
     {
         $this->blueprint
+            ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('indexCommand')
-            ->with('gin', 'col', 'myName');
+            ->with('index', 'col', 'myName', 'gin');
 
         $this->blueprint->gin('col', 'myName');
     }
@@ -61,8 +62,9 @@ class BlueprintTest extends TestCase implements TestHook
     public function testGistIndex()
     {
         $this->blueprint
+            ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('indexCommand')
-            ->with('gist', 'col', 'myName');
+            ->with('index', 'col', 'myName', 'gist');
 
         $this->blueprint->gist('col', 'myName');
     }

@@ -4,6 +4,7 @@ namespace Pedrollo\Database\Schema\Grammars;
 
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint as BaseBlueprint;
+use Pedrollo\Database\IndexDefinition;
 use Pedrollo\Database\Schema\Blueprint;
 
 /**
@@ -313,34 +314,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     }
 
     /**
-     * Compile a gin index key command.
-     *
-     * @param  \Pedrollo\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $command
-     * @return string
-     */
-    public function compileGin(Blueprint $blueprint, Fluent $command)
-    {
-        $columns = $this->columnize($command->columns);
-
-        return sprintf('CREATE INDEX %s ON %s USING GIN(%s)', $command->index, $this->wrapTable($blueprint), $columns);
-    }
-
-    /**
-     * Compile a gist index key command.
-     *
-     * @param  \Pedrollo\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $command
-     * @return string
-     */
-    public function compileGist(Blueprint $blueprint, Fluent $command)
-    {
-        $columns = $this->columnize($command->columns);
-
-        return sprintf('CREATE INDEX %s ON %s USING GIST(%s)', $command->index, $this->wrapTable($blueprint), $columns);
-    }
-
-    /**
      * Compile create table query.
      *
      * @param BaseBlueprint $blueprint
@@ -385,6 +358,29 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
             $this->wrapTable($blueprint),
             $this->columnize($command->columns),
             isset($command->algorithm)?$command->algorithm:''
+        );
+    }
+
+    /**
+     * Compile a plain index key command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Pedrollo\Database\IndexDefinition  $command
+     * @return string
+     */
+    public function compileIndex(BaseBlueprint $blueprint, Fluent $command)
+    {
+        return preg_replace('/\s+/',' ',
+            sprintf('create %s index %s %s on %s %s (%s) nulls %s distinct %s',
+                $command->unique ? 'unique' : '',
+                $command->concurrently ? 'concurrently' : '',
+                $this->wrap($command->index),
+                $this->wrapTable($blueprint),
+                $command->algorithm ? 'using '.$command->algorithm : '',
+                $this->columnize($command->columns),
+                $command->distinctNulls ? '' : 'not',
+                $command->where ? 'where '.$command->where : ''
+            )
         );
     }
 }

@@ -64,6 +64,68 @@ class PostgresGrammarTest extends TestCase
         $this->assertStringContainsString('PARTITION BY HASH (foo, "bar")', $statements[0]);
     }
 
+    public function testAddingIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->index('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create index', $statements[0]);
+    }
+
+    public function testAddingUniqueIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->unique('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create unique index', $statements[0]);
+    }
+
+    public function testAddingNullsDistinctIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->index('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create index', $statements[0]);
+        $this->assertStringContainsString('nulls distinct', $statements[0]);
+    }
+
+    public function testAddingNullsNotDistinctIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->index('foo')->dontDistinctNulls();
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create index', $statements[0]);
+        $this->assertStringContainsString('nulls not distinct', $statements[0]);
+    }
+
+    public function testAddingConcurrentIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->index('foo')->concurrently();
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create index concurrently', $statements[0]);
+    }
+
+    public function testAddingIndexWithWhere()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->index('foo')->where('bar is null');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('where bar is null', $statements[0]);
+    }
+
     public function testAddingGinIndex()
     {
         $blueprint = new Blueprint('test');
@@ -71,8 +133,8 @@ class PostgresGrammarTest extends TestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertStringContainsString('CREATE INDEX', $statements[0]);
-        $this->assertStringContainsString('GIN("foo")', $statements[0]);
+        $this->assertStringContainsString('create index', $statements[0]);
+        $this->assertStringContainsString('using gin ("foo")', $statements[0]);
     }
 
     public function testAddingGistIndex()
@@ -82,8 +144,8 @@ class PostgresGrammarTest extends TestCase
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
-        $this->assertStringContainsString('CREATE INDEX', $statements[0]);
-        $this->assertStringContainsString('GIST("foo")', $statements[0]);
+        $this->assertStringContainsString('create index', $statements[0]);
+        $this->assertStringContainsString('using gist ("foo")', $statements[0]);
     }
 
     public function testAddingCharacter()

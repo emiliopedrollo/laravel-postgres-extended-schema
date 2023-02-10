@@ -2,8 +2,10 @@
 
 namespace Pedrollo\Database\Schema;
 
+use Doctrine\DBAL\Schema\Index;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Fluent;
+use Pedrollo\Database\IndexDefinition;
 use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
 
 /**
@@ -83,15 +85,43 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     }
 
     /**
+     * Add a new index command to the blueprint.
+     *
+     * @param  string  $type
+     * @param  string|array  $columns
+     * @param  string  $index
+     * @param  string|null  $algorithm
+     * @return \Pedrollo\Database\IndexDefinition
+     */
+    protected function indexCommand($type, $columns, $index, $algorithm = null)
+    {
+        $columns = (array) $columns;
+
+        // If no name was specified for this index, we will create one using a basic
+        // convention of the table name, followed by the columns, followed by an
+        // index type, such as primary or index, which makes the index unique.
+        $index = $index ?: $this->createIndexName($type, $columns);
+
+        $unique = $type == 'unique';
+        if ($unique) $type = 'index';
+
+        $this->commands[] = $command = (new IndexDefinition(array_merge(
+            compact('type'), compact('index', 'columns', 'algorithm'))
+        ))->unique($unique);
+
+        return $command;
+    }
+
+    /**
      * Specify an index for the table.
      *
      * @param  string|array  $columns
      * @param  string  $name
      * @return \Illuminate\Support\Fluent
      */
-    public function gin($columns, $name = null)
+    public function gin($columns, $name = null, $where = null)
     {
-        return $this->indexCommand('gin', $columns, $name);
+        return $this->indexCommand('index', $columns, $name, 'gin');
     }
 
     /**
@@ -103,7 +133,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public function gist($columns, $name = null)
     {
-        return $this->indexCommand('gist', $columns, $name);
+        return $this->indexCommand('index', $columns, $name, 'gist');
     }
 
     /**
