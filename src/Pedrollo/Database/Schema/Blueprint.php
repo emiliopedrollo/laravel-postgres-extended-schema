@@ -2,6 +2,7 @@
 
 namespace Pedrollo\Database\Schema;
 
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Fluent;
 use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
 
@@ -17,6 +18,14 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public $inherits;
 
+    /** @var string  */
+    public $partition_type = 'hash';
+
+    /**
+     * @var null
+     */
+    public $partition_expression;
+
     /**
      * Specify table inheritance.
      *
@@ -26,6 +35,21 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     public function inherits($table)
     {
         $this->inherits = $table;
+    }
+
+    /**
+     * @param string $type
+     * @param array|string $expressions
+     * @return void
+     */
+    public function partitionBy($type, $expressions)
+    {
+        $this->partition_type = $type;
+        $this->partition_expression = join(', ',array_map(function ($expression) {
+            return $expression instanceof Expression
+                ? $expression
+                : '"'.$expression.'"';
+        },is_array($expressions) ? $expressions : [$expressions]));
     }
 
     /**

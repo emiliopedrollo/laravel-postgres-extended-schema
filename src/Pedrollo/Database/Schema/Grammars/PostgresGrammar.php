@@ -345,14 +345,17 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      *
      * @param BaseBlueprint $blueprint
      * @param  \Illuminate\Support\Fluent $command
-     * @return string
+     * @return array
      */
     public function compileCreate(BaseBlueprint $blueprint, Fluent $command)
     {
         $sql = parent::compileCreate($blueprint, $command);
 
         if (isset($blueprint->inherits)) {
-            $sql .= ' INHERITS ("'.$blueprint->inherits.'")';
+            $sql[0] .= ' INHERITS ("'.$blueprint->inherits.'")';
+        }
+        if (isset($blueprint->partition_expression)) {
+            $sql[0] .= ' PARTITION BY '.$blueprint->partition_type.' ('.$blueprint->partition_expression.')';
         }
         return $sql;
     }

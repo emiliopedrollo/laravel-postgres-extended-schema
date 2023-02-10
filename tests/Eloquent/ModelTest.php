@@ -14,7 +14,6 @@ class ModelTest extends TestCase
     public function testWithExpression()
     {
         $user = Mockery::mock(User::class);
-        /** @noinspection PhpParamsInspection */
         $user->shouldReceive('getConnection')->andReturn($this->getConnection());
         $user->makePartial();
 
@@ -34,7 +33,6 @@ class ModelTest extends TestCase
     public function testWithRecursiveExpression()
     {
         $user = Mockery::mock(User::class);
-        /** @noinspection PhpParamsInspection */
         $user->shouldReceive('getConnection')->andReturn($this->getConnection());
         $user->makePartial();
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Schema\Grammars;
 
+use Illuminate\Database\Query\Expression;
 use Mockery;
 use Pedrollo\Database\Schema\Blueprint;
 use Pedrollo\Database\PostgresConnection;
@@ -10,6 +11,59 @@ use Tests\TestCase;
 
 class PostgresGrammarTest extends TestCase
 {
+    public function testCreateWithInherits()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->uuid('id');
+        $blueprint->inherits('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('INHERITS ("foo")', $statements[0]);
+    }
+
+    public function testCreateWithPartitionBy()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->timestamp('foo');
+        $blueprint->partitionBy('RANGE','foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('PARTITION BY RANGE ("foo")', $statements[0]);
+    }
+
+    public function testCreateWithPartitionByExpression()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->timestamp('foo');
+        $blueprint->partitionBy('RANGE',new Expression('foo'));
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('PARTITION BY RANGE (foo)', $statements[0]);
+    }
+
+    public function testCreateWithPartitionByMultipleValues()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->timestamp('foo');
+        $blueprint->uuid('bar');
+        $blueprint->partitionBy('HASH',[new Expression('foo'),"bar"]);
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('PARTITION BY HASH (foo, "bar")', $statements[0]);
+    }
+
     public function testAddingGinIndex()
     {
         $blueprint = new Blueprint('test');

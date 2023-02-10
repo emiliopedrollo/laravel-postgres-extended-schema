@@ -31,6 +31,24 @@ class BlueprintTest extends TestCase implements TestHook
         parent::tearDown();
     }
 
+    public function testInherits()
+    {
+        $this->blueprint
+            ->shouldReceive('inehrits')
+            ->with('anotherTable');
+
+        $this->blueprint->inherits('anotherTable');
+    }
+
+    public function testPartitionBy()
+    {
+        $this->blueprint
+            ->shouldReceive('partitionBy')
+            ->with('range','timestamp');
+
+        $this->blueprint->partitionBy('range', 'timestamp');
+    }
+
     public function testGinIndex()
     {
         $this->blueprint
