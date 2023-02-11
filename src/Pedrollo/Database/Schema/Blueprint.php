@@ -28,6 +28,8 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public $partition_expression;
 
+    public $with = [];
+
     /**
      * Specify table inheritance.
      *
@@ -52,6 +54,11 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
                 ? $expression
                 : '"'.$expression.'"';
         },is_array($expressions) ? $expressions : [$expressions]));
+    }
+
+    public function with($key, $value)
+    {
+        $this->with[$key] = $value;
     }
 
     /**

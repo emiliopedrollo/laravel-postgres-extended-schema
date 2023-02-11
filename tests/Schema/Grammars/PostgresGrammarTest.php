@@ -21,7 +21,7 @@ class PostgresGrammarTest extends TestCase
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('INHERITS ("foo")', $statements[0]);
+        $this->assertStringContainsString('inherits ("foo")', $statements[0]);
     }
 
     public function testCreateWithPartitionBy()
@@ -29,12 +29,40 @@ class PostgresGrammarTest extends TestCase
         $blueprint = new Blueprint('test');
         $blueprint->create();
         $blueprint->timestamp('foo');
-        $blueprint->partitionBy('RANGE','foo');
+        $blueprint->partitionBy('range','foo');
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('PARTITION BY RANGE ("foo")', $statements[0]);
+        $this->assertStringContainsString('partition by range ("foo")', $statements[0]);
+    }
+
+    public function testCreateWithStorageParameters()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->timestamp('foo');
+        $blueprint->with('bar','fur');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('with (bar = "fur")', $statements[0]);
+    }
+
+    public function testCreateWithMultipleStorageParameters()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->create();
+        $blueprint->timestamp('foo');
+        $blueprint->with('bar','fur');
+        $blueprint->with('baz',0.42);
+        $blueprint->with('buz',false);
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('create table', $statements[0]);
+        $this->assertStringContainsString('with (bar = "fur", baz = 0.42, buz = false)', $statements[0]);
     }
 
     public function testCreateWithPartitionByExpression()
@@ -42,12 +70,12 @@ class PostgresGrammarTest extends TestCase
         $blueprint = new Blueprint('test');
         $blueprint->create();
         $blueprint->timestamp('foo');
-        $blueprint->partitionBy('RANGE',new Expression('foo'));
+        $blueprint->partitionBy('range',new Expression('foo'));
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('PARTITION BY RANGE (foo)', $statements[0]);
+        $this->assertStringContainsString('partition by range (foo)', $statements[0]);
     }
 
     public function testCreateWithPartitionByMultipleValues()
@@ -56,12 +84,12 @@ class PostgresGrammarTest extends TestCase
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->uuid('bar');
-        $blueprint->partitionBy('HASH',[new Expression('foo'),"bar"]);
+        $blueprint->partitionBy('hash',[new Expression('foo'),"bar"]);
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('PARTITION BY HASH (foo, "bar")', $statements[0]);
+        $this->assertStringContainsString('partition by hash (foo, "bar")', $statements[0]);
     }
 
     public function testAddingIndex()
