@@ -313,6 +313,20 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
         return preg_match('/^uuid_generate_v/', $value);
     }
 
+    public function compileWith(BaseBlueprint $blueprint, Fluent $command){
+        if (is_string($command->value)) {
+            $value = $this->wrap($command->value);
+        } elseif (is_bool($command->value)) {
+            $value = ($command->value?'true':'false');
+        } else $value = ((string) $command->value);
+
+        return sprintf('alter table %s set (%s = %s)',
+            $this->wrapTable($blueprint),
+            $command->key,
+            $value
+        );
+    }
+
     /**
      * Compile create table query.
      *

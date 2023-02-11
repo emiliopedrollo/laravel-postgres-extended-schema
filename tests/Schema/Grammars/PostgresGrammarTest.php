@@ -45,9 +45,9 @@ class PostgresGrammarTest extends TestCase
         $blueprint->with('bar','fur');
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
-        $this->assertCount(1, $statements);
+        $this->assertCount(2, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('with (bar = "fur")', $statements[0]);
+        $this->assertStringContainsString('set (bar = "fur")', $statements[1]);
     }
 
     public function testCreateWithMultipleStorageParameters()
@@ -60,9 +60,11 @@ class PostgresGrammarTest extends TestCase
         $blueprint->with('buz',false);
         $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
 
-        $this->assertCount(1, $statements);
+        $this->assertCount(4, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
-        $this->assertStringContainsString('with (bar = "fur", baz = 0.42, buz = false)', $statements[0]);
+        $this->assertStringContainsString('set (bar = "fur")', $statements[1]);
+        $this->assertStringContainsString('set (baz = 0.42)', $statements[2]);
+        $this->assertStringContainsString('set (buz = false)', $statements[3]);
     }
 
     public function testCreateWithPartitionByExpression()

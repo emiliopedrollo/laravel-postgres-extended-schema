@@ -58,7 +58,9 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
 
     public function with($key, $value)
     {
-        $this->with[$key] = $value;
+        $this->commands[] = new Fluent(array_merge([
+            'name' => 'with',
+        ], compact('key','value')));
     }
 
     /**
