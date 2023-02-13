@@ -344,15 +344,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
         if (isset($blueprint->partition_expression)) {
             $sql[0] .= ' partition by '.$blueprint->partition_type.' ('.$blueprint->partition_expression.')';
         }
-        if (!empty($blueprint->with)) {
-            $sql[0] .= ' with (' . join(', ',array_map(function($key, $value) {
-                if (is_string($value)) {
-                    return $key.' = '.$this->wrap($value);
-                } elseif (is_bool($value)) {
-                    return $key.' = '.($value?'true':'false');
-                } else return $key.' = '.((string) $value);
-            },array_keys($blueprint->with),array_values($blueprint->with))).')';
-        }
         return $sql;
     }
 

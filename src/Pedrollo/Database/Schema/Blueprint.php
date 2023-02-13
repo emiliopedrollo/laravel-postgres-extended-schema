@@ -28,8 +28,6 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      */
     public $partition_expression;
 
-    public $with = [];
-
     /**
      * Specify table inheritance.
      *
