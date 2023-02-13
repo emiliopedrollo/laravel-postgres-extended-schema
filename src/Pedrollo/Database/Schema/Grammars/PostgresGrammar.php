@@ -384,12 +384,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      */
     public function compileIndex(BaseBlueprint $blueprint, Fluent $command)
     {
-        $distinct_nulls = '';
-        if (!is_null($command->distinctNulls)) {
-            $distinct_nulls = sprintf('nulls %s distinct',
-                $command->distinctNulls ? '' : 'not'
-            );
-        }
         return preg_replace('/\s+/',' ',
             sprintf('create %s index %s %s on %s %s (%s) %s %s',
                 $command->unique ? 'unique' : '',
@@ -398,7 +392,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
                 $this->wrapTable($blueprint),
                 $command->algorithm ? 'using '.$command->algorithm : '',
                 $this->columnize($command->columns),
-                $distinct_nulls,
+                $command->distinctNulls ? '' : 'nulls not distinct',
                 $command->where ? 'where '.$command->where : ''
             )
         );
