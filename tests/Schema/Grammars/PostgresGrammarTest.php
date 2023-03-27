@@ -122,7 +122,8 @@ class PostgresGrammarTest extends TestCase
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
-        $this->assertStringContainsString('nulls distinct', $statements[0]);
+        $this->assertStringNotContainsString('nulls distinct', $statements[0]);
+        $this->assertStringNotContainsString('nulls not distinct', $statements[0]);
     }
 
     public function testAddingNullsNotDistinctIndex()

@@ -21,7 +21,8 @@ class BlueprintTest extends TestCase implements TestHook
         parent::setUp();
 
         $this->blueprint = Mockery::mock(Blueprint::class)
-            ->makePartial()->shouldAllowMockingProtectedMethods();
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
     }
 
 
@@ -34,8 +35,9 @@ class BlueprintTest extends TestCase implements TestHook
     public function testInherits()
     {
         $this->blueprint
-            ->shouldReceive('inehrits')
-            ->with('anotherTable');
+            ->shouldReceive('inherits')
+            ->withArgs(['anotherTable'])
+            ->once();
 
         $this->blueprint->inherits('anotherTable');
     }
@@ -44,7 +46,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('partitionBy')
-            ->with('range','timestamp');
+            ->withArgs(['range','timestamp'])
+            ->once();
 
         $this->blueprint->partitionBy('range', 'timestamp');
     }
@@ -54,7 +57,8 @@ class BlueprintTest extends TestCase implements TestHook
         $this->blueprint
             ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('indexCommand')
-            ->with('index', 'col', 'myName', 'gin');
+            ->withArgs(['index', 'col', 'myName', 'gin'])
+            ->once();
 
         $this->blueprint->gin('col', 'myName');
     }
@@ -64,7 +68,8 @@ class BlueprintTest extends TestCase implements TestHook
         $this->blueprint
             ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('indexCommand')
-            ->with('index', 'col', 'myName', 'gist');
+            ->withArgs(['index', 'col', 'myName', 'gist'])
+            ->once();
 
         $this->blueprint->gist('col', 'myName');
     }
@@ -73,7 +78,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('character', 'col', 14);
+            ->withArgs(['character', 'col', ['length' => 14]])
+            ->once();
 
         $this->blueprint->character('col', 14);
     }
@@ -82,7 +88,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('hstore', 'col');
+            ->withArgs(['hstore', 'col'])
+            ->once();
 
         $this->blueprint->hstore('col');
     }
@@ -91,7 +98,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('uuid', 'col');
+            ->withArgs(['uuid', 'col'])
+            ->once();
 
         $this->blueprint->uuid('col');
     }
@@ -100,7 +108,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('jsonb', 'col');
+            ->withArgs(['jsonb', 'col'])
+            ->once();
 
         $this->blueprint->jsonb('col');
     }
@@ -109,7 +118,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('int4range', 'col');
+            ->withArgs(['int4range', 'col'])
+            ->once();
 
         $this->blueprint->int4range('col');
     }
@@ -118,7 +128,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('int8range', 'col');
+            ->withArgs(['int8range', 'col'])
+            ->once();
 
         $this->blueprint->int8range('col');
     }
@@ -127,7 +138,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('numrange', 'col');
+            ->withArgs(['numrange', 'col'])
+            ->once();
 
         $this->blueprint->numrange('col');
     }
@@ -136,7 +148,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('tsrange', 'col');
+            ->withArgs(['tsrange', 'col'])
+            ->once();
 
         $this->blueprint->tsrange('col');
     }
@@ -145,7 +158,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('tstzrange', 'col');
+            ->withArgs(['tstzrange', 'col'])
+            ->once();
 
         $this->blueprint->tstzrange('col');
     }
@@ -155,7 +169,8 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('bit', 'col');
+            ->withArgs(['bit', 'col', ['length' => 2]])
+            ->once();
 
         $this->blueprint->bit('col',2);
     }
@@ -165,16 +180,18 @@ class BlueprintTest extends TestCase implements TestHook
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('bytea', 'col');
+            ->withArgs(['bytea', 'col'])
+            ->once();
 
-        $this->blueprint->tstzrange('col');
+        $this->blueprint->bytea('col');
     }
 
     public function testCustomType()
     {
         $this->blueprint
             ->shouldReceive('addColumn')
-            ->with('anewtype','col');
+            ->withArgs(['anewtype','col'])
+            ->once();
 
         $this->blueprint->custom('col','anewtype');
     }
