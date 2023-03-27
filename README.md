@@ -11,7 +11,7 @@ Laravel Postgres Extended
 
 ## Introduction
 
-An extended PostgreSQL driver for Laravel 6.0+ with support for some aditional PostgreSQL data types: hstore, uuid, geometric types (point, path, circle, line, polygon...) and support for WITH \[RECURSIVE\] clause
+An extended PostgreSQL driver for Laravel 9+ with support for some aditional PostgreSQL data types: hstore, uuid, geometric types (point, path, circle, line, polygon...) and support for WITH \[RECURSIVE\] clause
 
 ## Installation  
 
