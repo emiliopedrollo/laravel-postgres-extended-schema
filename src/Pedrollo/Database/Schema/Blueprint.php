@@ -2,7 +2,6 @@
 
 namespace Pedrollo\Database\Schema;
 
-use Doctrine\DBAL\Schema\Index;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Fluent;
 use Pedrollo\Database\IndexDefinition;
@@ -16,7 +15,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
 {
     /**
      * Inherited table name
-     * @var string
+     * @var string|null
      */
     public $inherits;
 
@@ -24,9 +23,9 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     public $partition_type = 'hash';
 
     /**
-     * @var null
+     * @var string|Expression|null
      */
-    public $partition_expression;
+    public $partition_expressions;
 
     /**
      * Specify table inheritance.
@@ -47,11 +46,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
     public function partitionBy($type, $expressions)
     {
         $this->partition_type = $type;
-        $this->partition_expression = join(', ',array_map(function ($expression) {
-            return $expression instanceof Expression
-                ? $expression
-                : '"'.$expression.'"';
-        },is_array($expressions) ? $expressions : [$expressions]));
+        $this->partition_expressions = is_array($expressions) ? $expressions : [$expressions];
     }
 
     public function with($key, $value)

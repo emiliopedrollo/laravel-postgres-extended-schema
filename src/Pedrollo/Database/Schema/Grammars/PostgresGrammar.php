@@ -2,6 +2,7 @@
 
 namespace Pedrollo\Database\Schema\Grammars;
 
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint as BaseBlueprint;
 
@@ -330,17 +331,28 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      *
      * @param BaseBlueprint $blueprint
      * @param  \Illuminate\Support\Fluent $command
-     * @return array
+     * @return array|string
      */
     public function compileCreate(BaseBlueprint $blueprint, Fluent $command)
     {
         $sql = parent::compileCreate($blueprint, $command);
 
+        $addToSql = function($string) use (&$sql) {
+            (is_string($sql) ? $sql .= $string : $sql[0] .= $string);
+        };
+
         if (isset($blueprint->inherits)) {
-            $sql[0] .= ' inherits ("'.$blueprint->inherits.'")';
+            $addToSql(' inherits ("'.$blueprint->inherits.'")');
         }
-        if (isset($blueprint->partition_expression)) {
-            $sql[0] .= ' partition by '.$blueprint->partition_type.' ('.$blueprint->partition_expression.')';
+        if (isset($blueprint->partition_expressions)) {
+
+            $expressions = join(', ',array_map(function ($expression) {
+                return $expression instanceof Expression
+                    ? $expression->getValue($this)
+                    : '"'.$expression.'"';
+            },$blueprint->partition_expressions));
+
+            $addToSql(' partition by '.$blueprint->partition_type.' ('.$expressions.')');
         }
         return $sql;
     }
