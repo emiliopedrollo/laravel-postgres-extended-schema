@@ -10,6 +10,12 @@ use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
 /**
  * Class Blueprint
  * @package Pedrollo\Database\Schema
+ * @method IndexDefinition unique($columns, $name = null, $algorithm = null)
+ * @method IndexDefinition index($columns, $name = null, $algorithm = null)
+ * @method IndexDefinition primary($columns, $name = null, $algorithm = null)
+ * @method IndexDefinition fullText($columns, $name = null, $algorithm = null)
+ * @method IndexDefinition spatialIndex($columns, $name = null)
+ * @method IndexDefinition rawIndex($expression, $name)
  */
 class Blueprint extends \Illuminate\Database\Schema\Blueprint
 {
