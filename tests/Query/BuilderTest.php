@@ -138,6 +138,32 @@ class BuilderTest extends TestCase
         $this->assertEquals($expected, $builder->toSql());
     }
 
+    public function testLateralLeftJoinSub()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->leftLateralJoinSub(
+                $this->getConnection()->query()->select('*')->from('roles'),
+                'roles','user_id','=','users.id'
+            );
+
+        $expected = 'select * from "users" left join lateral (select * from "roles") as "roles" on "user_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
+    public function testLateralRightJoinSub()
+    {
+        $builder = $this->getConnection()->query();
+        $builder->select(['*'])->from('users')
+            ->rightLateralJoinSub(
+                $this->getConnection()->query()->select('*')->from('roles'),
+                'roles','user_id','=','users.id'
+            );
+
+        $expected = 'select * from "users" right join lateral (select * from "roles") as "roles" on "user_id" = "users"."id"';
+        $this->assertEquals($expected, $builder->toSql());
+    }
+
     public function testInsertUsing()
     {
 

@@ -111,7 +111,7 @@ class Builder extends BaseBuilder
         return parent::leftJoin(new Expression('lateral '.$table), $first, $operator, $second);
     }
 
-    public function leftJoinSub($query, $as, $first, $operator = null, $second = null)
+    public function leftLateralJoinSub($query, $as, $first, $operator = null, $second = null)
     {
         return $this->joinLateralSub($query, $as, $first, $operator, $second, 'left');
     }
@@ -121,7 +121,7 @@ class Builder extends BaseBuilder
         return parent::rightJoin(new Expression('lateral '.$table), $first, $operator, $second);
     }
 
-    public function rightJoinSub($query, $as, $first, $operator = null, $second = null)
+    public function rightLateralJoinSub($query, $as, $first, $operator = null, $second = null)
     {
         return $this->joinLateralSub($query, $as, $first, $operator, $second, 'right');
     }
