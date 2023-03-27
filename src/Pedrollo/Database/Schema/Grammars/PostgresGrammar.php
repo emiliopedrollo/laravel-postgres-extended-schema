@@ -4,8 +4,6 @@ namespace Pedrollo\Database\Schema\Grammars;
 
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint as BaseBlueprint;
-use Pedrollo\Database\IndexDefinition;
-use Pedrollo\Database\Schema\Blueprint;
 
 /**
  * Class PostgresGrammar
@@ -297,7 +295,7 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
      */
     protected function getDefaultValue($value)
     {
-        if($this->isUuid($value)) return strval($value);
+        if($this->isUuidGenerator($value)) return strval($value);
 
         return parent::getDefaultValue($value);
     }
@@ -305,12 +303,12 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     /**
      * Check if string matches on of uuid_generate functions
      *
-     * @param $value
-     * @return int
+     * @param mixed $value
+     * @return bool
      */
-    protected function isUuid($value)
+    protected function isUuidGenerator(mixed $value)
     {
-        return preg_match('/^uuid_generate_v/', $value);
+        return is_string($value) && str_starts_with($value, 'uuid_generate_v');
     }
 
     public function compileWith(BaseBlueprint $blueprint, Fluent $command){
