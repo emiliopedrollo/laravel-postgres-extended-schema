@@ -104,6 +104,16 @@ class PostgresGrammarTest extends TestCase
         $this->assertStringContainsString('create index', $statements[0]);
     }
 
+    public function testForeignKey()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->foreign('foo')->references('id')->on('bar');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('alter table', $statements[0]);
+    }
+
     public function testAddingUniqueIndex()
     {
         $blueprint = new Blueprint('test');

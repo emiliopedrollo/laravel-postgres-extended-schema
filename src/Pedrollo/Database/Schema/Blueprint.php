@@ -113,11 +113,21 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
         $unique = $type == 'unique';
         if ($unique) $type = 'index';
 
-        $this->commands[] = $command = (new IndexDefinition(array_merge(
-            compact('type'), compact('index', 'columns', 'algorithm'))
-        ))->unique($unique);
+        return $this->addIndex(
+            $type, compact('index', 'columns', 'algorithm', 'unique')
+        );
+    }
+
+    protected function addIndex($name, array $parameters = [])
+    {
+        $this->commands[] = $command = $this->createIndex($name, $parameters);
 
         return $command;
+    }
+
+    protected function createIndex($name, array $parameters = [])
+    {
+        return new IndexDefinition(array_merge(compact('name'), $parameters));
     }
 
     /**
