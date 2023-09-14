@@ -4,6 +4,7 @@ namespace Pedrollo\Database\Schema;
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 use Pedrollo\Database\IndexDefinition;
 use Pedrollo\Database\Schema\Grammars\PostgresGrammar;
 
@@ -110,8 +111,11 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
         // index type, such as primary or index, which makes the index unique.
         $index = $index ?: $this->createIndexName($type, $columns);
 
-        $unique = $type == 'unique';
-        if ($unique) $type = 'index';
+        $unique = stripos($type, 'unique') !== false;
+        if ($unique) $type = Str::camel(join('_',array_map(
+            function($part) { return strtolower(str_ireplace('unique', 'index', $part)); },
+            explode('_', Str::snake($type))
+        )));
 
         return $this->addIndex(
             $type, compact('index', 'columns', 'algorithm', 'unique')

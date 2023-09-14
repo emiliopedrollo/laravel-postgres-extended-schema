@@ -104,6 +104,16 @@ class PostgresGrammarTest extends TestCase
         $this->assertStringContainsString('create index', $statements[0]);
     }
 
+    public function testDroppingIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->dropIndex('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('drop index', $statements[0]);
+    }
+
     public function testForeignKey()
     {
         $blueprint = new Blueprint('test');
@@ -122,6 +132,16 @@ class PostgresGrammarTest extends TestCase
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create unique index', $statements[0]);
+    }
+
+    public function testDroppingUniqueIndex()
+    {
+        $blueprint = new Blueprint('test');
+        $blueprint->dropUnique('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertStringContainsString('drop index', $statements[0]);
     }
 
     public function testAddingNullsDistinctIndex()

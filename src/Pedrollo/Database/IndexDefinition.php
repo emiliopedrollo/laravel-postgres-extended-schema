@@ -15,9 +15,14 @@ use Illuminate\Support\Fluent;
  */
 class IndexDefinition extends Fluent
 {
-    public $name = 'index';
 
-
+    public function __get($key): mixed
+    {
+        return match ($key) {
+            'name' => $this->attributes['name'] ?? 'index',
+            default => parent::__get($key),
+        };
+    }
 
     public function __construct($attributes = [])
     {
