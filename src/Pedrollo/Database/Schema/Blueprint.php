@@ -2,7 +2,9 @@
 
 namespace Pedrollo\Database\Schema;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Database\Schema\Grammars\Grammar;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use Pedrollo\Database\IndexDefinition;
@@ -68,7 +70,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      *
      * @return void
      */
-    protected function addFluentIndexes()
+    protected function addFluentIndexes(Connection $connection, Grammar $grammar): void
     {
         foreach ($this->columns as $column) {
             foreach (array('primary', 'unique', 'index', 'gin', 'gist') as $index) {
