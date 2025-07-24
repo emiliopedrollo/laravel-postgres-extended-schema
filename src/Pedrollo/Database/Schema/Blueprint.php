@@ -70,7 +70,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      *
      * @return void
      */
-    protected function addFluentIndexes(Connection $connection, Grammar $grammar): void
+    protected function addFluentIndexes(): void
     {
         foreach ($this->columns as $column) {
             foreach (array('primary', 'unique', 'index', 'gin', 'gist') as $index) {
@@ -104,7 +104,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
      * @param  string|null  $algorithm
      * @return \Pedrollo\Database\IndexDefinition
      */
-    protected function indexCommand($type, $columns, $index, $algorithm = null)
+    protected function indexCommand($type, $columns, $index, $algorithm = null, $operatorClass = null)
     {
         $columns = (array) $columns;
 
@@ -120,7 +120,7 @@ class Blueprint extends \Illuminate\Database\Schema\Blueprint
         )));
 
         return $this->addIndex(
-            $type, compact('index', 'columns', 'algorithm', 'unique')
+            $type, compact('index', 'columns', 'algorithm', 'unique', 'operatorClass')
         );
     }
 

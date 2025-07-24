@@ -3,6 +3,7 @@
 
 namespace Pedrollo\Database\Query\Grammars;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder as BaseBuilder;
 use Pedrollo\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\PostgresGrammar as BasePostgresGrammar;
@@ -12,8 +13,9 @@ class PostgresGrammar extends BasePostgresGrammar
     /**
      * Create a new grammar instance.
      */
-    public function __construct()
+    public function __construct(Connection $connection)
     {
+        parent::__construct($connection);
         array_unshift($this->selectComponents, 'expressions');
     }
     /**

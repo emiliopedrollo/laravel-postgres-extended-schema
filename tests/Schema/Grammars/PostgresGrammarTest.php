@@ -13,11 +13,11 @@ class PostgresGrammarTest extends TestCase
 {
     public function testCreateWithInherits()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(),'test');
         $blueprint->create();
         $blueprint->uuid('id');
         $blueprint->inherits('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -26,11 +26,11 @@ class PostgresGrammarTest extends TestCase
 
     public function testCreateWithPartitionBy()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->partitionBy('range','foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -39,11 +39,11 @@ class PostgresGrammarTest extends TestCase
 
     public function testCreateWithStorageParameters()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->with('bar','fur');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(2, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -52,13 +52,13 @@ class PostgresGrammarTest extends TestCase
 
     public function testCreateWithMultipleStorageParameters()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->with('bar','fur');
         $blueprint->with('baz',0.42);
         $blueprint->with('buz',false);
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(4, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -69,11 +69,11 @@ class PostgresGrammarTest extends TestCase
 
     public function testCreateWithPartitionByExpression()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->partitionBy('range',new Expression('foo'));
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -82,12 +82,12 @@ class PostgresGrammarTest extends TestCase
 
     public function testCreateWithPartitionByMultipleValues()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->create();
         $blueprint->timestamp('foo');
         $blueprint->uuid('bar');
         $blueprint->partitionBy('hash',[new Expression('foo'),"bar"]);
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create table', $statements[0]);
@@ -96,9 +96,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->index('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
@@ -106,9 +106,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testDroppingIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->dropIndex('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('drop index', $statements[0]);
@@ -116,9 +116,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testForeignKey()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->foreign('foo')->references('id')->on('bar');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -126,9 +126,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingUniqueIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->unique('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create unique index', $statements[0]);
@@ -136,9 +136,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testDroppingUniqueIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->dropUnique('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('drop index', $statements[0]);
@@ -146,9 +146,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingNullsDistinctIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->index('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
@@ -158,9 +158,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingNullsNotDistinctIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->index('foo')->dontDistinctNulls();
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
@@ -169,9 +169,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingConcurrentIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->index('foo')->concurrently();
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index concurrently', $statements[0]);
@@ -179,9 +179,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingIndexWithWhere()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->index('foo')->where('bar is null');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('where bar is null', $statements[0]);
@@ -189,9 +189,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingGinIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->gin('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
@@ -200,9 +200,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingGistIndex()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->gist('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('create index', $statements[0]);
@@ -211,9 +211,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingCharacter()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->character('foo', 14);
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -222,9 +222,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingHstore()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->hstore('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -233,9 +233,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingUuid()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->uuid('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -244,9 +244,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingJsonb()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->jsonb('foo');
-        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -255,12 +255,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingInt4range()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->int4range('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -269,12 +266,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingInt8range()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->int8range('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -283,12 +277,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingNumrange()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->numrange('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -297,12 +288,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingTSRange()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->tsrange('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -311,12 +299,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingTSTZRange()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->tstzrange('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -325,12 +310,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingDataRange()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->daterange('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -339,12 +321,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingTSVector()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->tsvector('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -353,12 +332,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingBit()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->bit('foo',8);
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -367,12 +343,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingBytea()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->bytea('foo');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -381,12 +354,9 @@ class PostgresGrammarTest extends TestCase
 
     public function testAddingCustomType()
     {
-        $blueprint = new Blueprint('test');
+        $blueprint = new Blueprint($this->getConnection(), 'test');
         $blueprint->custom('foo','bar');
-        $statements = $blueprint->toSql(
-            $this->getConnection(),
-            $this->getGrammar()
-        );
+        $statements = $blueprint->toSql();
 
         $this->assertCount(1, $statements);
         $this->assertStringContainsString('alter table', $statements[0]);
@@ -398,11 +368,11 @@ class PostgresGrammarTest extends TestCase
      */
     protected function getConnection()
     {
-        return Mockery::mock(PostgresConnection::class);
-    }
-
-    protected function getGrammar()
-    {
-        return new PostgresGrammar();
+        $connection = Mockery::mock(PostgresConnection::class)->makePartial();
+        $connection->setSchemaGrammar(new PostgresGrammar($connection));
+//        $connection->shouldReceive('getSchemaGrammar')
+//            ->withNoArgs()
+//            ->andReturn(new PostgresGrammar($connection));;
+        return $connection;
     }
 }
