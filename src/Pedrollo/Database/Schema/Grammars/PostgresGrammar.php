@@ -37,38 +37,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     }
 
     /**
-     * Create the column definition for a uuid type.
-     *
-     * @param Fluent $column
-     * @return string
-     */
-    protected function typeUuid(Fluent $column)
-    {
-        return "uuid";
-    }
-
-    /**
-     * Create the column definition for a jsonb type.
-     *
-     * @param Fluent $column
-     * @return string
-     */
-    protected function typeJsonb(Fluent $column)
-    {
-        return "jsonb";
-    }
-
-    /**
-     * Create the column definition for an IPv4 or IPv6 address.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeIpAddress(Fluent $column)
-    {
-        return 'inet';
-    }
-    /**
      * Create the column definition for a CIDR notation-style netmask.
      *
      * @param  \Illuminate\Support\Fluent  $column
@@ -77,17 +45,6 @@ class PostgresGrammar extends \Illuminate\Database\Schema\Grammars\PostgresGramm
     protected function typeNetmask(Fluent $column)
     {
         return 'cidr';
-    }
-
-    /**
-     * Create the column definition for a MAC address.
-     *
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string
-     */
-    protected function typeMacAddress(Fluent $column)
-    {
-        return 'macaddr';
     }
 
     /**
