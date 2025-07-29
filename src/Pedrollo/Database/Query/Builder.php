@@ -6,6 +6,7 @@ namespace Pedrollo\Database\Query;
 use Closure;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Builder as BaseEloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as BaseBuilder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Query\Grammars\Grammar;
@@ -39,13 +40,13 @@ class Builder extends BaseBuilder
      * Add a common table expression to the query.
      *
      * @param string $name
-     * @param Closure|BaseEloquentBuilder|BaseBuilder|string $query
+     * @param Closure|BaseEloquentBuilder|BaseBuilder|Relation|string $query
      * @param array|null $columns
      * @param bool $recursive
      * @return $this
      */
     public function withExpression(
-        string $name, Closure|BaseEloquentBuilder|BaseBuilder|string $query,
+        string $name, Closure|BaseEloquentBuilder|BaseBuilder|Relation|string $query,
         ?array $columns = null, bool $recursive = false
     ): static
     {
